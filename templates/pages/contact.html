@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}light-body{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-top:150px;">
+    <h2 class="section-title">GET IN TOUCH</h2>
+    <p class="section-subtitle">We’re here to assist you</p>
+
+    <div class="contact-grid">
+
+        <!-- Contact Information -->
+        <div class="contact-card">
+            <h3 style="font-family:'Cinzel',serif;font-size:1.5rem;color:#7B1E26;margin-bottom:2rem;">
+                Contact Information
+            </h3>
+
+            <div class="contact-info">
+
+                <div class="contact-item">
+                    <div class="contact-icon">Location</div>
+                    <div class="contact-text">
+                        Pokhara, Indra Chowk, Nepal
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">Contact</div>
+                    <div class="contact-text">
+                        +977-9864488011
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">Mail</div>
+                    <div class="contact-text">
+                        saaksham.basnet@gmail.com
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">Open from</div>
+                    <div class="contact-text">
+                        Sun – Sat: 9:00 AM – 7:00 PM<br>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Google Map -->
+        <div>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!4v1771955737425!6m8!1m7!1s5IZhMWEx-8VifVSrgFphkA!2m2!1d28.20607178864141!2d83.99335175022824!3f104.18931873640858!4f0.39809963804403026!5f0.7820865974627469" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                width="100%"
+                height="450"
+                style="border:1px solid rgba(244,196,48,0.3);"
+                allowfullscreen=""
+                loading="lazy">
+            </iframe>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

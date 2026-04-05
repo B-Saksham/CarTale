@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="section">
+
+<h2 class="section-title">YOUR CART</h2>
+<p class="section-subtitle">Review your selected accessories</p>
+
+{% if cart_items %}
+
+<div style="max-width:1100px;margin:auto;">
+
+<table class="cart-table">
+
+<thead>
+<tr>
+<th>Product</th>
+<th>Price</th>
+<th>Quantity</th>
+<th>Subtotal</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+{% for item in cart_items %}
+<tr>
+
+<td class="cart-name">{{ item.name }}</td>
+
+<td>NPR {{ item.price }}</td>
+
+<td>
+<div class="qty-box">
+
+<a href="{% url 'update_cart' item.id 'dec' %}" class="qty-btn">−</a>
+<span class="qty-number">{{ item.qty }}</span>
+<a href="{% url 'update_cart' item.id 'inc' %}" class="qty-btn">+</a>
+
+</div>
+</td>
+
+<td class="cart-subtotal">NPR {{ item.subtotal }}</td>
+
+<td>
+<a href="{% url 'remove_from_cart' item.id %}" class="remove-btn">
+Remove
+</a>
+</td>
+
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+<!-- TOTAL SECTION -->
+<div class="cart-total-box">
+
+<div class="total-line">
+<span>Total Amount</span>
+<span class="total-price">NPR {{ total }}</span>
+</div>
+
+<div class="cart-actions">
+
+<button class="car-book-btn" style="background:black;"
+onclick="window.location.href='/store/'">
+Continue Shopping
+</button>
+
+<a href="{% url 'checkout' %}">
+    <button class="car-book-btn">
+        Proceed to Checkout
+    </button>
+</a>
+</div>
+
+</div>
+
+</div>
+
+{% else %}
+<p style="text-align:center;font-size:1.2rem;">Your cart is empty.</p>
+{% endif %}
+
+</section>
+
+<style>
+
+/* ===== CART TABLE ===== */
+.cart-table{
+width:100%;
+border-collapse:collapse;
+border:1px solid #F4C430;
+background:#fff;
+}
+
+.cart-table th{
+font-family:'Cinzel', serif;
+letter-spacing:0.12em;
+color:#7B1E26;
+padding:18px;
+border-bottom:1px solid #F4C430;
+}
+
+.cart-table td{
+padding:18px;
+text-align:center;
+border-bottom:1px solid rgba(244,196,48,0.3);
+}
+
+.cart-name{
+font-family:'Cinzel', serif;
+font-size:1.1rem;
+color:#7B1E26;
+}
+
+/* ===== QTY BOX ===== */
+.qty-box{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:14px;
+}
+
+.qty-btn{
+background:#7B1E26;
+color:#fff;
+padding:4px 12px;
+text-decoration:none;
+font-size:18px;
+border-radius:4px;
+transition:0.3s;
+}
+
+.qty-btn:hover{
+background:#5a1519;
+}
+
+.qty-number{
+font-weight:600;
+font-size:16px;
+}
+
+/* ===== REMOVE ===== */
+.remove-btn{
+color:#7B1E26;
+text-decoration:none;
+font-weight:600;
+}
+
+.remove-btn:hover{
+color:black;
+}
+
+/* ===== TOTAL BOX ===== */
+.cart-total-box{
+margin-top:40px;
+border:1px solid #F4C430;
+padding:30px;
+background:#fffdf6;
+}
+
+.total-line{
+display:flex;
+justify-content:space-between;
+font-family:'Cinzel', serif;
+font-size:1.3rem;
+margin-bottom:25px;
+}
+
+.total-price{
+color:#7B1E26;
+font-size:1.5rem;
+font-weight:700;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.cart-actions{
+display:flex;
+gap:20px;
+justify-content:center;
+margin-top:20px;
+}
+
+</style>
+
+{% endblock %}

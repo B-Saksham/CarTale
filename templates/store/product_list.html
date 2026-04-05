@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section">
+
+<div class="store-header">
+
+<div>
+<h2 class="section-title" style="text-align:left;">ACCESSORIES STORE</h2>
+<p class="section-subtitle" style="text-align:left;">
+Premium car accessories curated for quality and performance
+</p>
+</div>
+
+<a href="{% url 'cart_view' %}" class="cart-link">
+🛒 Cart ({{ cart_count }})
+</a>
+
+</div>
+
+<div class="accessories-grid">
+
+{% for product in products %}
+<div class="accessory-card">
+
+    <!-- IMAGE -->
+    <div class="accessory-image slider-container">
+
+        {% if product.images.all %}
+            {% for img in product.images.all %}
+                <img src="{{ img.image.url }}"
+                     class="slide {% if forloop.first %}active{% endif %}">
+            {% endfor %}
+
+            {% if product.images.count > 1 %}
+                <button class="slider-btn prev" onclick="prevSlide(this)">❮</button>
+                <button class="slider-btn next" onclick="nextSlide(this)">❯</button>
+            {% endif %}
+        {% else %}
+            <div class="accessory-fallback">🧰</div>
+        {% endif %}
+
+    </div>
+
+    <!-- DETAILS -->
+    <div class="accessory-body">
+
+        <div class="accessory-header">
+            <h3 class="accessory-name">{{ product.name }}</h3>
+            <div class="accessory-price">
+                NPR {{ product.price }}
+            </div>
+        </div>
+
+        <div class="accessory-description">
+            {{ product.description }}
+        </div>
+
+        <div class="accessory-buttons">
+
+            <a href="{% url 'add_to_cart' product.id %}" class="btn-dark">
+                Add to Cart
+            </a>
+
+            <a href="{% url 'buy_now' product.id %}" class="btn-maroon">
+                Buy Now
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+</section>
+
+<style>
+
+/* ===== STORE HEADER ===== */
+.store-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+max-width:1400px;
+margin:0 auto 3rem auto;
+}
+
+.cart-link{
+background:#7B1E26;
+color:white;
+padding:12px 20px;
+text-decoration:none;
+font-family:'Cinzel', serif;
+letter-spacing:0.08em;
+border:1px solid #7B1E26;
+transition:0.3s;
+}
+
+.cart-link:hover{
+background:white;
+color:#7B1E26;
+border:1px solid #F4C430;
+}
+
+/* ===== GRID ===== */
+.accessories-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:3rem;
+max-width:1400px;
+margin:auto;
+}
+
+/* ===== CARD ===== */
+.accessory-card{
+border:1px solid #F4C430;
+background:#ffffff;
+display:flex;
+flex-direction:column;
+transition:all 0.35s ease;
+}
+
+.accessory-card:hover{
+transform:translateY(-6px);
+box-shadow:0 18px 40px rgba(123,30,38,0.12);
+}
+
+.accessory-image{
+height:260px;
+background:#f5f5f5;
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+overflow:hidden;
+}
+
+.slide{
+display:none;
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+.slide.active{
+display:block;
+}
+
+.accessory-fallback{
+font-size:3rem;
+}
+
+.accessory-body{
+padding:2rem;
+display:flex;
+flex-direction:column;
+gap:1.5rem;
+flex-grow:1;
+}
+
+.accessory-name{
+font-family:'Cinzel', serif;
+font-size:1.3rem;
+color:#7B1E26;
+}
+
+.accessory-price{
+font-size:1.5rem;
+font-weight:700;
+}
+
+.accessory-description{
+border:1px solid rgba(244,196,48,0.4);
+background:#fffdf6;
+padding:1rem;
+font-size:0.9rem;
+line-height:1.6;
+max-height:100px;
+overflow-y:auto;
+}
+
+.accessory-buttons{
+display:flex;
+gap:10px;
+margin-top:auto;
+}
+
+.btn-dark,
+.btn-maroon{
+flex:1;
+text-align:center;
+padding:0.9rem 0;
+font-family:'Cinzel', serif;
+font-size:0.9rem;
+letter-spacing:0.08em;
+text-decoration:none;
+transition:0.3s;
+}
+
+.btn-dark{
+background:black;
+color:white;
+}
+
+.btn-maroon{
+background:#7B1E26;
+color:white;
+}
+
+.btn-maroon:hover{
+background:#5a1519;
+}
+
+@media(max-width:1200px){
+.accessories-grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:768px){
+.accessories-grid{
+grid-template-columns:1fr;
+}
+.store-header{
+flex-direction:column;
+gap:20px;
+align-items:flex-start;
+}
+}
+
+</style>
+
+<script>
+function nextSlide(btn){
+const container = btn.closest(".slider-container");
+const slides = container.querySelectorAll(".slide");
+let index = [...slides].findIndex(s=>s.classList.contains("active"));
+slides[index].classList.remove("active");
+index = (index+1)%slides.length;
+slides[index].classList.add("active");
+}
+function prevSlide(btn){
+const container = btn.closest(".slider-container");
+const slides = container.querySelectorAll(".slide");
+let index = [...slides].findIndex(s=>s.classList.contains("active"));
+slides[index].classList.remove("active");
+index = (index-1+slides.length)%slides.length;
+slides[index].classList.add("active");
+}
+</script>
+
+{% endblock %}

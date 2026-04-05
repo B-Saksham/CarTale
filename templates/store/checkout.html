@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="section">
+<div class="form-container">
+
+<h2 class="section-title">CHECKOUT</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<label class="form-label">Full Name</label>
+<input type="text" name="name" required class="form-input">
+
+<label class="form-label">Phone</label>
+<input type="text" name="phone" required class="form-input">
+
+<label class="form-label">Email</label>
+<input type="email" name="email" required class="form-input">
+
+<br>
+<br>
+<h3>Total: NPR {{ total }}</h3>
+<br>
+
+<button type="submit" class="car-book-btn">
+Pay with Khalti
+</button>
+
+</form>
+</div>
+</section>
+
+{% endblock %}

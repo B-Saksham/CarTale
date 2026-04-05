@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+
+<section class="section">
+    <div class="form-container">
+
+        <h2 class="section-title">REGISTER</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="error-box">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="password1" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="password2" class="form-input" required>
+            </div>
+
+            <button type="submit" class="car-book-btn">
+                Register
+            </button>
+        </form>
+
+        <p style="margin-top: 2rem; text-align: center;">
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}

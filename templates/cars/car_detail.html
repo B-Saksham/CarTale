@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ car.brand }} {{ car.model }} ({{ car.year }})</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <p><strong>Price:</strong> NPR {{ car.price }}</p>
+        <p><strong>Mileage:</strong> {{ car.mileage }} KM</p>
+        <p><strong>Fuel Type:</strong> {{ car.fuel_type|title }}</p>
+        <p><strong>Transmission:</strong> {{ car.transmission|title }}</p>
+
+        <hr>
+
+        <h5>Description</h5>
+        <p>{{ car.description }}</p>
+
+        <a href="{% url 'book_test_drive' car.id %}" class="btn btn-success mt-3">
+            Book Test Drive
+        </a>
+
+    </div>
+</div>
+{% endblock %}

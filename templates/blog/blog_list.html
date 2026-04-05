@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="section">
+    <h2 class="section-title">LATEST INSIGHTS</h2>
+    <p class="section-subtitle">Automotive knowledge & market insights</p>
+
+    <div class="blog-grid">
+        {% for blog in blogs %}
+        <div class="blog-card">
+
+            <div class="blog-content">
+                <h3 class="blog-title">{{ blog.title }}</h3>
+
+                <div class="blog-meta">
+                    By {{ blog.author }} • {{ blog.created_at|date:"M d, Y" }}
+                </div>
+
+                <div class="blog-preview">
+                    {{ blog.content|truncatewords:40 }}
+                </div>
+
+                <a href="{% url 'blog_detail' blog.slug %}" class="blog-read">
+                    Read More →
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

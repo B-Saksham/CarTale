@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="section" style="text-align:center;">
+
+<div style="max-width:700px;margin:auto;padding:3rem;border:2px solid #F4C430;background:#fffdf6;">
+
+<h1 style="color:#7B1E26;font-family:'Cinzel',serif;font-size:2.5rem;">
+Payment Successful
+</h1>
+
+<p style="margin:20px 0;font-size:1.1rem;">
+Your order has been placed successfully.
+</p>
+
+<a href="{% url 'product_list' %}" class="car-book-btn" style="width:300px;margin:auto;">
+Continue Shopping
+</a>
+
+</div>
+
+</section>
+
+{% endblock %}

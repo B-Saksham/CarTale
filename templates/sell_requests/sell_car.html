@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section" style="padding-top:6rem;">
+    <div class="form-container">
+
+        <h2 class="section-title">SELL YOUR CAR</h2>
+        <p class="section-subtitle">
+            Submit your car details and photos for evaluation
+        </p>
+
+        <form method="post" enctype="multipart/form-data" class="buy-form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+
+            <!-- IMAGE UPLOAD -->
+            <div class="form-group">
+                <label class="form-label">Car Images</label>
+                <input type="file" name="images" multiple accept="image/*">
+                <small>Upload multiple car images</small>
+            </div>
+
+            <div id="previewContainer" style="margin-top:10px;"></div>
+
+            <button type="submit" class="car-book-btn">
+                Submit Sell Request
+            </button>
+        </form>
+
+    </div>
+</section>
+
+<script>
+const input = document.querySelector('input[name="images"]');
+const preview = document.getElementById("previewContainer");
+
+input.addEventListener("change", () => {
+    preview.innerHTML = "";
+    for (let file of input.files) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.height = "80px";
+            img.style.margin = "5px";
+            img.style.borderRadius = "6px";
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+
+{% endblock %}

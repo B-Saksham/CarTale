@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="browse-container">
+
+    <!-- ================= FILTER SIDEBAR ================= -->
+    <aside class="filters-sidebar">
+        <form method="get">
+
+            <!-- PRICE -->
+            <div class="filter-group">
+                <div class="filter-title">PRICE RANGE (NPR)</div>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="price" value="under_2000000"
+                    {% if "under_2000000" in selected_price %}checked{% endif %}>
+                    Under 20,00,000
+                </label>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="price" value="2000000_3500000"
+                    {% if "2000000_3500000" in selected_price %}checked{% endif %}>
+                    20,00,000 – 35,00,000
+                </label>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="price" value="3500000_5000000"
+                    {% if "3500000_5000000" in selected_price %}checked{% endif %}>
+                    35,00,000 – 50,00,000
+                </label>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="price" value="over_5000000"
+                    {% if "over_5000000" in selected_price %}checked{% endif %}>
+                    Over 50,00,000
+                </label>
+            </div>
+
+            <!-- BRAND -->
+            <div class="filter-group">
+                <div class="filter-title">BRAND</div>
+                {% for b in available_brands %}
+                <label class="filter-option">
+                    <input type="checkbox" name="brand" value="{{ b }}"
+                    {% if b in selected_brands %}checked{% endif %}>
+                    {{ b }}
+                </label>
+                {% endfor %}
+            </div>
+
+            <!-- YEAR -->
+            <div class="filter-group">
+                <div class="filter-title">YEAR</div>
+                {% for y in available_years %}
+                <label class="filter-option">
+                    <input type="checkbox" name="year" value="{{ y }}"
+                    {% if y|stringformat:"s" in selected_years %}checked{% endif %}>
+                    {{ y }}
+                </label>
+                {% endfor %}
+            </div>
+
+            <!-- TRANSMISSION -->
+            <div class="filter-group">
+                <div class="filter-title">TRANSMISSION</div>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="transmission" value="manual"
+                    {% if "manual" in selected_transmission %}checked{% endif %}>
+                    Manual
+                </label>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="transmission" value="automatic"
+                    {% if "automatic" in selected_transmission %}checked{% endif %}>
+                    Automatic
+                </label>
+            </div>
+
+            <!-- FUEL -->
+            <div class="filter-group">
+                <div class="filter-title">FUEL TYPE</div>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="fuel_type" value="petrol"
+                    {% if "petrol" in selected_fuel %}checked{% endif %}>
+                    Petrol
+                </label>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="fuel_type" value="diesel"
+                    {% if "diesel" in selected_fuel %}checked{% endif %}>
+                    Diesel
+                </label>
+
+                <label class="filter-option">
+                    <input type="checkbox" name="fuel_type" value="electric"
+                    {% if "electric" in selected_fuel %}checked{% endif %}>
+                    Electric
+                </label>
+            </div>
+
+            <button type="submit" class="car-book-btn" style="width:100%; margin-top:1rem;">
+                Apply Filters
+            </button>
+
+        </form>
+    </aside>
+
+    <!-- ================= CAR LIST ================= -->
+    <section class="cars-listing">
+
+        <h2 class="section-title">Available Vehicles</h2>
+
+        {% if cars %}
+            <p class="section-subtitle">{{ cars|length }} Vehicles found</p>
+
+            {% for car in cars %}
+            <div class="car-list-item">
+
+                <!-- IMAGE -->
+                <div class="car-list-image">
+                    <div class="car-slider" data-slider>
+                        {% if car.images.count %}
+                            <div class="car-slider-frame">
+                                {% for img in car.images.all %}
+                                    <img
+                                        src="{{ img.image.url }}"
+                                        class="car-slide {% if forloop.first %}active{% endif %}"
+                                        alt="{{ car.brand }} {{ car.model }}"
+                                    >
+                                {% endfor %}
+                            </div>
+
+                            {% if car.images.count > 1 %}
+                                <button type="button" class="slider-btn prev">‹</button>
+                                <button type="button" class="slider-btn next">›</button>
+                            {% endif %}
+                        {% else %}
+                            <div class="car-slider-frame car-slider-fallback">🚗</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- DETAILS -->
+                <div class="car-list-details">
+
+                    <!-- TITLE -->
+                    <div class="car-main-header">
+                        <h3 class="car-name">
+                            {{ car.brand }} {{ car.model }}
+                        </h3>
+
+                        <div class="car-price">
+                            NPR {{ car.price }}
+                        </div>
+                    </div>
+
+                    <!-- SPEC GRID -->
+                    <div class="car-info-grid">
+
+                        <div class="info-item">
+                            <div class="info-label">Year</div>
+                            <div class="info-value">{{ car.year }}</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">Mileage</div>
+                            <div class="info-value">{{ car.mileage }} KM</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">Transmission</div>
+                            <div class="info-value">{{ car.transmission|title }}</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">Fuel Type</div>
+                            <div class="info-value">{{ car.fuel_type|title }}</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">Availability</div>
+                            <div class="info-value">
+                                {% if car.is_available %}
+                                    Available
+                                {% else %}
+                                    Sold
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- DESCRIPTION BOX -->
+                    <div class="car-description-box">
+                        <div class="description-title">Description</div>
+                        <div class="description-content">
+                            {{ car.description }}
+                        </div>
+                    </div>
+
+                    <!-- BUTTON -->
+                    <a href="{% url 'book_test_drive' car.id %}"
+                    class="car-book-btn">
+                        Book Test Drive
+                    </a>
+
+                </div>
+
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="section-subtitle">
+                No vehicles match your selected filters.
+            </p>
+        {% endif %}
+
+    </section>
+
+</div>
+{% endblock %}

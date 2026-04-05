@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section" style="padding-top:6rem;">
+    <div class="form-container">
+
+        <!-- TITLE -->
+        <h2 class="section-title" style="margin-bottom:0.5rem;">
+            BOOK TEST DRIVE
+        </h2>
+
+        <p class="section-subtitle" style="margin-bottom:3rem;">
+            {{ car.brand }} {{ car.model }} · {{ car.year }}
+        </p>
+
+        <!-- FORM -->
+        <form method="post" class="buy-form">
+            {% csrf_token %}
+
+            <!-- NAME -->
+            <div class="form-group">
+                <label class="form-label" for="{{ form.name.id_for_label }}">
+                    Full Name
+                </label>
+                {{ form.name }}
+            </div>
+
+            <!-- PHONE -->
+            <div class="form-group">
+                <label class="form-label" for="{{ form.phone.id_for_label }}">
+                    Phone Number
+                </label>
+                {{ form.phone }}
+            </div>
+
+            <!-- DATE -->
+            <div class="form-group">
+                <label class="form-label" for="{{ form.preferred_date.id_for_label }}">
+                    Preferred Date
+                </label>
+                {{ form.preferred_date }}
+            </div>
+
+            <!-- TIME -->
+            <div class="form-group">
+                <label class="form-label" for="{{ form.preferred_time.id_for_label }}">
+                    Preferred Time
+                </label>
+                {{ form.preferred_time }}
+            </div>
+
+            <!-- SUBMIT -->
+            <button type="submit" class="car-book-btn">
+                Confirm Test Drive
+            </button>
+
+        </form>
+
+    </div>
+</section>
+
+{% endblock %}
