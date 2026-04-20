@@ -1,0 +1,134 @@
+/* ================= CHATBOT WRAPPER ================= */
+#chatbot-wrapper {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+}
+
+/* ================= TOGGLE BUTTON ================= */
+#chatbot-toggle {
+    width: 55px;
+    height: 55px;
+    background: #7B1E26;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+/* ================= CONTAINER ================= */
+#chatbot-container {
+    width: 340px;
+    height: 450px;
+    background: #FFFFFF;
+    border: 1px solid #F4C430;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: none;
+}
+
+/* ================= HEADER ================= */
+#chatbot-header {
+    background: #7B1E26;
+    color: white;
+    padding: 12px;
+    font-family: 'Cinzel', serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatbot-minimize {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* ================= CHAT AREA ================= */
+#chatbox {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+/* BOT + USER TEXT */
+#chatbox div {
+    margin-bottom: 10px;
+}
+
+/* ================= OPTIONS ================= */
+.chat-option {
+    display: inline-block;
+    margin: 4px 4px 0 0;
+    padding: 6px 10px;
+    border: 1px solid #F4C430;
+    background: #fff;
+    color: #7B1E26;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.chat-option:hover {
+    background: #7B1E26;
+    color: white;
+}
+
+.chat-option:disabled {
+    opacity: 0.4;
+}
+
+/* ================= INPUT ================= */
+#chatbot-input-area {
+    border-top: 1px solid #eee;
+    padding: 8px;
+}
+
+#chatInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+/* ================= ANIMATION ================= */
+#chatbot-container.open {
+    display: flex;
+    animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+#chatbox {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    font-size: 14px;
+
+    /* 🔥 FIX SCROLL BLEED */
+    overscroll-behavior: contain;
+}
+#chatbot-container {
+    overscroll-behavior: contain;
+}
+
+#chatbot-toggle.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+#chatImages {
+    display: none !important;
+}

@@ -1,0 +1,28 @@
+{% load static %}
+
+<div id="chatbot-wrapper">
+
+    <!-- TOGGLE BUTTON -->
+    <div id="chatbot-toggle">💬</div>
+
+    <!-- CHATBOX -->
+    <div id="chatbot-container">
+
+        <div id="chatbot-header">
+            <span>CarTale Assistant</span>
+            <button id="chatbot-minimize">—</button>
+        </div>
+
+        <div id="chatbox"></div>
+
+        <div id="chatbot-input-area">
+            <input id="chatInput" placeholder="Type your message..." />
+        </div>
+
+        <input type="file" id="chatImages" multiple style="display:none;">
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
+<script src="{% static 'js/chatbot.js' %}"></script>

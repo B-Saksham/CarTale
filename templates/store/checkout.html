@@ -23,8 +23,17 @@
 <h3>Total: NPR {{ total }}</h3>
 <br>
 
+<label class="form-label">Payment Method</label>
+
+<select name="payment_method" class="form-input" required>
+    <option value="stripe">Stripe (Recommended)</option>
+    <option value="khalti">Khalti</option>
+</select>
+
+<br><br>
+
 <button type="submit" class="car-book-btn">
-Pay with Khalti
+Proceed to Payment
 </button>
 
 </form>

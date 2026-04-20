@@ -1,0 +1,240 @@
+/* ================================
+   GLOBAL RESET (MATCH YOUR SITE)
+================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+/* ================================
+   HEADER (MATCH FRONTEND HEADER)
+================================ */
+#header {
+    background: #7B1E26 !important;
+    padding: 2rem 4rem !important;
+    border-bottom: 1px solid rgba(244,196,48,0.4) !important;
+    text-align: center;
+}
+
+.admin-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+}
+
+#site-name {
+    display: none !important;
+}
+
+/* ================================
+   USER LINKS
+================================ */
+#user-tools {
+    color: #fff !important;
+}
+
+#user-tools a {
+    color: #fff !important;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+}
+
+/* ================================
+   MAIN CONTENT (MATCH SECTION)
+================================ */
+#content {
+    width: 100% !important;
+    max-width: 1600px !important;
+    margin: 120px auto 60px !important;
+}
+
+/* ================================
+   SECTION TITLE (MATCH .section-title)
+================================ */
+#content h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.6rem;
+    letter-spacing: 0.25em;
+    color: #7B1E26;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+#content-related {
+    border: 1px solid #F4C430 !important;
+    padding: 2rem;
+    background: #fff;
+}
+
+/* TITLE */
+#content-related h2 {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.15em;
+    color: #7B1E26;
+}
+
+/* ================================
+   MODULES → CARDS (LIKE .car-card)
+================================ */
+.module {
+    border: 1px solid #F4C430 !important;
+    padding: 2rem !important;
+    background: #fff;
+    transition: all 0.35s ease;
+    position: relative;
+}
+
+/* GOLD GLOW EFFECT */
+.module:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 20px 40px rgba(123,30,38,0.12),
+        0 0 30px rgba(244,196,48,0.15);
+}
+
+/* SUBTLE GOLD OVERLAY LIKE YOUR CAR CARDS */
+.module::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(244,196,48,0.03);
+    opacity: 0;
+    transition: 0.3s;
+    pointer-events: none;   /* 🔥 THIS FIXES IT */
+}
+
+.module:hover::after {
+    opacity: 1;
+}
+
+/* ================================
+   MODULE TITLES
+================================ */
+.module h2 {
+    font-family: 'Cinzel', serif !important;
+    font-size: 1.2rem !important;
+    color: #7B1E26 !important;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+
+/* ================================
+   TABLE → CLEAN LIST (REMOVE DJANGO LOOK)
+================================ */
+.module table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+.module tr {
+    border-bottom: 1px solid rgba(244,196,48,0.3);
+}
+
+.module td {
+    padding: 12px 0;
+}
+
+/* REMOVE BLUE BACKGROUNDS */
+.module caption,
+.module thead,
+.app-list .model {
+    background: none !important;
+}
+
+/* ================================
+   LINKS (MATCH BRAND)
+================================ */
+a {
+    color: #7B1E26 !important;
+    text-decoration: none !important;
+    font-weight: 500;
+}
+
+a:hover {
+    color: #5a1519 !important;
+}
+
+/* ================================
+   BUTTONS (MATCH .btn-primary)
+================================ */
+.button,
+input[type=submit],
+.submit-row input {
+    background: #7B1E26 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 0.8rem 2rem !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.button:hover {
+    background: #5a1519 !important;
+}
+
+/* ================================
+   RIGHT PANEL
+================================ */
+#content-related {
+    border: 1px solid #F4C430 !important;
+    padding: 2rem !important;
+}
+
+/* ================================
+   FORMS (MATCH YOUR FORM DESIGN)
+================================ */
+input, select, textarea {
+    border: 1px solid rgba(244,196,48,0.5) !important;
+    padding: 10px !important;
+}
+
+input:focus, select:focus {
+    border-color: #F4C430 !important;
+    outline: none !important;
+}
+
+/* ================================
+   REMOVE DJANGO JUNK UI
+================================ */
+.breadcrumbs,
+.object-tools,
+#changelist-filter {
+    display: none !important;
+}
+/* ================================
+   GRID DASHBOARD LAYOUT
+================================ */
+#content-main {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+}
+a {
+    position: relative;
+}
+
+a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background: #F4C430;
+    transition: 0.3s;
+}
+
+a:hover::after {
+    width: 100%;
+}
+.module {
+    margin-bottom: 2.5rem !important;
+}

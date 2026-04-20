@@ -156,6 +156,7 @@ def checkout(request):
         name = request.POST.get("name")
         phone = request.POST.get("phone")
         email = request.POST.get("email")
+        payment_method = request.POST.get("payment_method")
 
         order = Order.objects.create(
             user=request.user,
@@ -163,9 +164,11 @@ def checkout(request):
             phone=phone,
             email=email,
             total_amount=total,
-            payment_status="pending"
+            payment_status="pending",
+            payment_method=payment_method
         )
 
+        # Save order items
         # Save order items
         for pid, item in cart.items():
             product = Product.objects.get(id=pid)
@@ -175,6 +178,10 @@ def checkout(request):
                 quantity=item["qty"],
                 price=item["price"]
             )
+
+        # ================= STRIPE =================
+        if payment_method == "stripe":
+            return redirect("stripe_create_session", order_id=order.id)
 
         test_amount = 10
 
@@ -264,3 +271,43 @@ def khalti_verify(request):
 @login_required
 def payment_success(request):
     return render(request, "store/payment_success.html")
+
+import stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@login_required
+def stripe_create_session(request, order_id):
+    order = Order.objects.get(id=order_id)
+
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price_data': {
+                'currency': 'npr',
+                'product_data': {
+                    'name': f"Order #{order.id}",
+                },
+                'unit_amount': order.total_amount * 100,
+            },
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url=f"http://127.0.0.1:8000/store/stripe-success/{order.id}/",
+        cancel_url="http://127.0.0.1:8000/store/cart/",
+    )
+
+    return redirect(session.url)
+
+
+@login_required
+def stripe_success(request, order_id):
+    order = Order.objects.get(id=order_id)
+
+    order.payment_status = "paid"
+    order.save()
+
+    send_telegram_alert(f"Stripe Payment Success - Order #{order.id}")
+
+    request.session["cart"] = {}
+
+    return redirect("payment_success")

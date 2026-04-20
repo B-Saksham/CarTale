@@ -51,10 +51,17 @@ class Order(models.Model):
     email = models.EmailField()
 
     total_amount = models.PositiveIntegerField(default=0)
+
     payment_status = models.CharField(
         max_length=20,
         choices=PAYMENT_STATUS,
         default="pending"
+    )
+
+    payment_method = models.CharField(
+        max_length=20,
+        choices=[("khalti", "Khalti"), ("stripe", "Stripe")],
+        default="khalti"
     )
 
     khalti_pidx = models.CharField(

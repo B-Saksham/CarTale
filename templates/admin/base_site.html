@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}CarTale Admin{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div class="admin-header">
+    <h1 class="admin-brand">CarTale</h1>
+</div>
+{% endblock %}

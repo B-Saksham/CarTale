@@ -3,8 +3,8 @@ from django.db import models
 
 class SellCarRequest(models.Model):
     INSPECTION_CHOICES = (
-        ('visit', 'We visit you'),
-        ('bring', 'Bring car to showroom'),
+        ('visit', 'Home Visit'),
+        ('bring', 'Visi Showroom'),
     )
 
     owner_name = models.CharField(max_length=100)

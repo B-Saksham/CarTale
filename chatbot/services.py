@@ -1,6 +1,8 @@
 from cars.models import Car
 from bookings.forms import TestDriveBookingForm
 from sell_requests.forms import SellCarForm
+from sell_requests.views import send_telegram_alert
+from datetime import datetime, timedelta
 
 
 def reset_chat(request):
@@ -11,14 +13,14 @@ def reset_chat(request):
     }
 
 
-def handle_chatbot_logic(request, message):
+def handle_chatbot_logic(request, message, files=None):
     state = request.session.get("chatbot")
 
     # FIRST LOAD
     if not state or not message:
         reset_chat(request)
         return {
-            "reply": "👋 Welcome to CarTale! What would you like to do?",
+            "reply": " Welcome to CarTale! How Can We Assist You?",
             "options": ["Browse Cars", "Book Test Drive", "Sell Car"]
         }
 
@@ -188,9 +190,9 @@ def handle_chatbot_logic(request, message):
             }
 
     # ================= BOOKING FLOW =================
-
     if flow == "booking":
 
+        # ================= CAR =================
         if step == "car":
             car_id = int(message.split(":")[0])
             data["car"] = car_id
@@ -198,24 +200,69 @@ def handle_chatbot_logic(request, message):
             request.session.modified = True
             return {"reply": "Enter your name:"}
 
+        # ================= NAME =================
         elif step == "name":
             data["name"] = message
             state["step"] = "phone"
             request.session.modified = True
             return {"reply": "Enter phone number:"}
 
+        # ================= PHONE =================
         elif step == "phone":
             data["phone"] = message
             state["step"] = "date"
             request.session.modified = True
-            return {"reply": "Preferred date (YYYY-MM-DD):"}
 
+            return {
+                "reply": "Select preferred date:",
+                "options": ["Today", "Tomorrow", "Pick another date"]
+            }
+
+        # ================= HANDLE MANUAL DATE TRIGGER =================
+        if message == "Pick another date":
+            return {"reply": "Enter date (YYYY-MM-DD):"}
+
+        # ================= DATE =================
         elif step == "date":
-            data["preferred_date"] = message
-            state["step"] = "time"
-            request.session.modified = True
-            return {"reply": "Preferred time (HH:MM):"}
 
+            today = datetime.now().date()
+            tomorrow = today + timedelta(days=1)
+
+            if message == "Today":
+                selected_date = today
+            elif message == "Tomorrow":
+                selected_date = tomorrow
+            else:
+                # manual input
+                try:
+                    selected_date = datetime.strptime(message, "%Y-%m-%d").date()
+                except:
+                    return {
+                        "reply": "Invalid format. Use YYYY-MM-DD or select an option.",
+                        "options": ["Today", "Tomorrow", "Pick another date"]
+                    }
+
+            data["preferred_date"] = str(selected_date)
+            state["step"] = "time"
+
+            # ================= TIME SLOTS =================
+            now = datetime.now()
+
+            if selected_date == now.date():
+                start_hour = max(9, now.hour + 1)
+            else:
+                start_hour = 9
+
+            time_options = [f"{h:02d}:00" for h in range(start_hour, 20)]
+
+            request.session.modified = True
+
+            return {
+                "reply": f"Select time for {selected_date}:",
+                "options": time_options
+            }
+
+        # ================= TIME =================
         elif step == "time":
             data["preferred_time"] = message
 
@@ -252,43 +299,68 @@ def handle_chatbot_logic(request, message):
                 reset_chat(request)
 
                 return {
-                    "reply": "✅ Booking successful!",
+                    "reply": " Booking successful!",
                     "options": ["Browse Cars", "Book Test Drive", "Sell Car"]
                 }
 
             else:
-                return {"reply": f"❌ Invalid data: {form.errors}"}
-
-    # ================= SELL FLOW =================
+                return {"reply": f" Invalid data: {form.errors}"}
+# ================= SELL FLOW =================
 
     if flow == "sell":
+
+        # 🔥 IMAGE STEP
+        if step == "images":
+            return {
+                "reply": "Processing images..."
+            }
+
         fields = [
             "owner_name", "phone", "car_brand", "car_model",
             "year", "mileage", "inspection_type", "preferred_date"
         ]
 
         for field in fields:
-            if field not in data:
-                data[field] = message
-                next_index = fields.index(field) + 1
 
-                if next_index < len(fields):
-                    state["step"] = fields[next_index]
-                    request.session.modified = True
-                    return {"reply": f"Enter {fields[next_index]}:"}
+            if field in data:
+                continue
 
+            # ✅ FIXED INSPECTION TYPE HANDLING
+            if field == "inspection_type":
+                if message == "Home Inspection":
+                    data[field] = "home"
+                elif message == "Visit Showroom":
+                    data[field] = "visit"
                 else:
-                    form = SellCarForm(data)
-                    if form.is_valid():
-                        form.save()
-                        reset_chat(request)
-                        return {
-                            "reply": "✅ Sell request submitted!",
-                            "options": ["Browse Cars", "Book Test Drive", "Sell Car"]
-                        }
-                    else:
-                        return {"reply": f"❌ Error: {form.errors}"}
+                    return {
+                        "reply": "Please select a valid option",
+                        "options": ["Home Inspection", "Visit Showroom"]
+                    }
+            else:
+                data[field] = message
 
+            next_index = fields.index(field) + 1
+
+            if next_index < len(fields):
+                next_field = fields[next_index]
+                state["step"] = next_field
+                request.session.modified = True
+
+                if next_field == "inspection_type":
+                    return {
+                        "reply": "Select inspection type:",
+                        "options": ["Home Inspection", "Visit Showroom"]
+                    }
+
+                return {"reply": f"Enter {next_field}:"}
+
+            else:
+                state["step"] = "images"
+                request.session.modified = True
+
+                return {
+                    "reply": "Upload car images now (you can select multiple)"
+                }
     # FALLBACK
     reset_chat(request)
     return {

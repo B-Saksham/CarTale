@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     product_list, add_to_cart, cart_view, remove_from_cart,
-    update_cart, buy_now, checkout, khalti_verify, payment_success
+    update_cart, buy_now, checkout, khalti_verify, payment_success, stripe_create_session, stripe_success
 )
 
 urlpatterns = [
@@ -17,4 +17,7 @@ urlpatterns = [
 
     path('khalti-verify/', khalti_verify, name='khalti_verify'),
     path('success/', payment_success, name='payment_success'),
+
+    path('stripe/create/<int:order_id>/', stripe_create_session, name='stripe_create_session'),
+    path('stripe-success/<int:order_id>/', stripe_success, name='stripe_success'),
 ]
